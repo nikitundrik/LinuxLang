@@ -34,8 +34,13 @@ public class Interpreter {
 						for (int i = 1; i < splittedData.length; i++) {
 							// Do this if splittedData[i] contains { ({} is a template for printing variables)
 							if (splittedData[i].contains("{")) {
-								// Creation of the variable name
+								// Creation of the variable names
 								String variableName = "";
+								String variableName1 = "";
+								// Creation of boolean that is true when we access the first variableName
+								boolean isFirstName = true;
+								// Creation of calculation type variable
+								char calcType = ' ';
 								// Turn the value of splittedData of the index i into array of chars
 								char[] stringArr = splittedData[i].toCharArray();
 								// Change it, so it doesn't include the {
@@ -44,17 +49,52 @@ public class Interpreter {
 								for (int j = 0; j < stringArr.length; j++) {
 									// If the template ends, do this
 									if (stringArr[j] == '}') {
-										// List through the variables list
-										for (Variable variable: variables) {
-											// If some value has the name that is equal variableName, print the value of it and break the loop
-											if (variable.name.equals(variableName)) {
-												System.out.print(variable.toString() + " ");
-												break;
+										// If isFirstName is equal to true, do this
+										if (isFirstName) {
+											// List through the variables list
+											for (Variable variable: variables) {
+												// If some value has the name that is equal variableName, print the value of it and break the loop
+												if (variable.name.equals(variableName)) {
+													System.out.print(variable.toString() + " ");
+													break;
+												}
+											}
+										} else { // If it's equal to true, do this
+											// Creation of variable objects
+											Variable var = null;
+											Variable var1 = null;
+											// List through the variables list
+											for (Variable variable: variables) {
+												if (variable.name.equals(variableName)) {
+													var = variable;
+												}
+											}
+											for (Variable variable: variables) {
+												if (variable.name.equals(variableName1)) {
+													var1 = variable;
+												}
+											}
+											// Print the result of calculation
+											if (calcType == '+') {
+												System.out.print(Calculations.add(var, var1));
+											} else if (calcType == '-') {
+												System.out.print(Calculations.subtract(var, var1));
 											}
 										}
+									} else if (stringArr[j] == '+') { // If the char is equal to +
+										isFirstName = false;
+										calcType = '+';
+									} else if (stringArr[j] == '-') { // If the char is equal to -
+										isFirstName = false;
+										calcType = '-';
+									} else {
+										// Add the char to the variable name 1 if isFirstName = true
+										if (isFirstName) {
+											variableName += stringArr[j];
+										} else { // Add the char to the variable name 1 if isFirstName = true
+											variableName1 += stringArr[j];
+										}
 									}
-									// Add the char to the variable name
-									variableName += stringArr[j];
 								}
 							}
 							// If not, print the value of splittedData with the index i
