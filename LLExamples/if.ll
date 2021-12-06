@@ -1,4 +1,4 @@
-li a 5
+li a 1
 nux a > 2
 linux a is bigger than 2
 x
