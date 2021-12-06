@@ -215,8 +215,22 @@ public class Interpreter {
 			} else {
 				type = "str";
 			}
+			boolean isInput = false;
+			// The variable that will be what user will input
+			String inputVariable = "";
+			// If value is !inu (variable can be inputed), start the input
+			if (splittedData[2].equals("!inu")) {
+				isInput = true;
+				Scanner varScanner = new Scanner(System.in);
+				inputVariable = varScanner.nextLine();
+			}
 			// Creating of the variable object with the type, name of the variable and value of the variable
-			Variable variable = new Variable(type, splittedData[1], splittedData[2]);
+			Variable variable;
+			if (!isInput) {
+				variable = new Variable(type, splittedData[1], splittedData[2]);
+			} else {
+				variable = new Variable(type, splittedData[1], inputVariable);
+			}
 			// Add the variable to the list
 			variables.add(variable);
 		}
